@@ -52,7 +52,7 @@ flowchart TD
     J -->|No| K[Exit or sleep]
     J -->|Yes| L[Send SMTP email]
     L --> K
-```
+
 
 ## Extension points
 - Add a new league provider implementing `LeagueProvider.latest_result`.
@@ -62,3 +62,4 @@ flowchart TD
 ## Notes
 - Current Bundesliga lookup scans recent matchdays and returns the latest finished match found for the target team.
 - For cloud use, run the same container on any scheduler (ECS, Kubernetes CronJob, VPS with Docker), or run Lambda on EventBridge.
+
