@@ -28,23 +28,6 @@ set -a && source .env && set +a
 python -m winwatch.main
 ```
 
-
-## GitHub Actions schedule
-A ready workflow is included at `.github/workflows/winwatch-schedule.yml`.
-
-- Runs every 4 hours plus manual trigger (`workflow_dispatch`).
-- Configured target: `LEAGUE=nhl`, `TEAM=Colorado Avalanche`, `EMAIL_TO=k3o2izccf@mozmail.com`.
-- Executes one check using `python -m winwatch.once`.
-
-Set these repository secrets before enabling the workflow:
-- `EMAIL_FROM`
-- `SMTP_HOST`
-- `SMTP_PORT`
-- `SMTP_USER`
-- `SMTP_PASSWORD`
-
-After adding secrets, go to **Actions -> WinWatch Schedule -> Run workflow** once to validate delivery.
-
 ## AWS Lambda mode
 Use handler: `winwatch.lambda_handler.handler`
 
@@ -69,7 +52,7 @@ flowchart TD
     J -->|No| K[Exit or sleep]
     J -->|Yes| L[Send SMTP email]
     L --> K
-```
+
 
 ## Extension points
 - Add a new league provider implementing `LeagueProvider.latest_result`.
@@ -79,3 +62,4 @@ flowchart TD
 ## Notes
 - Current Bundesliga lookup scans recent matchdays and returns the latest finished match found for the target team.
 - For cloud use, run the same container on any scheduler (ECS, Kubernetes CronJob, VPS with Docker), or run Lambda on EventBridge.
+
