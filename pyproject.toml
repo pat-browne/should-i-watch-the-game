@@ -1,0 +1,16 @@
+[project]
+name = "should-i-watch-the-game"
+version = "0.1.0"
+description = "Lightweight notifier for team wins in Bundesliga and NHL"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

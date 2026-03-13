@@ -1,0 +1,42 @@
+name: WinWatch Schedule
+
+on:
+  schedule:
+    - cron: "0 */4 * * *"
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  check-avalanche:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      LEAGUE: nhl
+      TEAM: Colorado Avalanche
+      EMAIL_TO: k3o2izccf@mozmail.com
+      EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+      SMTP_HOST: ${{ secrets.SMTP_HOST }}
+      SMTP_PORT: ${{ secrets.SMTP_PORT }}
+      SMTP_USER: ${{ secrets.SMTP_USER }}
+      SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate required secrets are present
+        run: |
+          test -n "$SMTP_HOST"
+          test -n "$SMTP_PORT"
+          test -n "$SMTP_USER"
+          test -n "$SMTP_PASSWORD"
+
+      - name: Run WinWatch once
+        run: |
+          PYTHONPATH=src python -m winwatch.once
