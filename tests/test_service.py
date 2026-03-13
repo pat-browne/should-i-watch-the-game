@@ -14,11 +14,6 @@ class DummyProvider:
         return GameResult("nhl", team_name, "Other", datetime.now(timezone.utc), self.won)
 
 
-class FailingProvider:
-    def latest_result(self, _team_name: str):
-        raise RuntimeError("api unavailable")
-
-
 class DummySettings:
     league = "nhl"
     team = "Team A"
@@ -44,16 +39,6 @@ class ServiceTests(unittest.TestCase):
         ) as send_mock:
             self.assertTrue(run_once(DummySettings()))
             send_mock.assert_called_once()
-
-    def test_run_once_returns_false_on_provider_error(self):
-        with patch("winwatch.service.PROVIDERS", {"nhl": FailingProvider()}):
-            self.assertFalse(run_once(DummySettings()))
-
-    def test_run_once_returns_false_on_notify_error(self):
-        with patch("winwatch.service.PROVIDERS", {"nhl": DummyProvider(True)}), patch(
-            "winwatch.service.send_watch_email", side_effect=RuntimeError("smtp down")
-        ):
-            self.assertFalse(run_once(DummySettings()))
 
 
 if __name__ == "__main__":

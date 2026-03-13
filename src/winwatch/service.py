@@ -18,28 +18,19 @@ def run_once(settings: Settings) -> bool:
     if not provider:
         raise ValueError(f"Unsupported league: {settings.league}")
 
-    try:
-        result = provider.latest_result(settings.team)
-    except Exception as exc:
-        print(f"provider_error league={settings.league}: {exc}")
-        return False
-
+    result = provider.latest_result(settings.team)
     if not result or not result.team_won:
         return False
 
-    try:
-        send_watch_email(
-            settings.smtp_host,
-            settings.smtp_port,
-            settings.smtp_user,
-            settings.smtp_password,
-            settings.email_from,
-            settings.email_to,
-            result,
-        )
-    except Exception as exc:
-        print(f"notify_error team={settings.team}: {exc}")
-        return False
+    send_watch_email(
+        settings.smtp_host,
+        settings.smtp_port,
+        settings.smtp_user,
+        settings.smtp_password,
+        settings.email_from,
+        settings.email_to,
+        result,
+    )
     return True
 
 

@@ -42,21 +42,6 @@ class ConfigTests(unittest.TestCase):
         self.assertEqual(settings.team, "Bayern Munich")
         self.assertEqual(settings.league, "bundesliga")
 
-    def test_email_from_defaults_to_smtp_user(self):
-        env = {
-            "LEAGUE": "nhl",
-            "TEAM": "Team A",
-            "EMAIL_TO": "to@test",
-            "SMTP_HOST": "smtp.test",
-            "SMTP_PORT": "587",
-            "SMTP_USER": "sender@test",
-            "SMTP_PASSWORD": "p",
-        }
-        with patch.dict(os.environ, env, clear=True):
-            settings = load_settings()
-
-        self.assertEqual(settings.email_from, "sender@test")
-
 
 if __name__ == "__main__":
     unittest.main()

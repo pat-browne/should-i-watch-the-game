@@ -5,9 +5,6 @@ on:
     - cron: "0 */4 * * *"
   workflow_dispatch:
 
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
-
 jobs:
   check-avalanche:
     runs-on: ubuntu-latest
@@ -29,13 +26,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Validate required secrets are present
-        run: |
-          test -n "$SMTP_HOST"
-          test -n "$SMTP_PORT"
-          test -n "$SMTP_USER"
-          test -n "$SMTP_PASSWORD"
 
       - name: Run WinWatch once
         run: |
